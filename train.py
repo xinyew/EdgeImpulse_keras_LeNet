@@ -8,6 +8,8 @@ from tensorflow.keras.layers import Dense, InputLayer, Dropout, Conv1D, Conv2D, 
 from tensorflow.keras.optimizers import Adam
 from conversion import convert_to_tf_lite, save_saved_model
 
+from tensorflow.keras import layers, models, losses
+
 # Lower TensorFlow log levels
 tf.get_logger().setLevel(logging.ERROR)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -36,6 +38,18 @@ Y_train = np.load(os.path.join(args.data_directory, 'Y_split_train.npy'))
 X_test = np.load(os.path.join(args.data_directory, 'X_split_test.npy'), mmap_mode='r')
 Y_test = np.load(os.path.join(args.data_directory, 'Y_split_test.npy'))
 
+print(X_train.shape)
+print(Y_train.shape)
+print(X_test.shape)
+print(Y_test.shape)
+# print(X_train[0])
+# for ll in ((X_train[0]).reshape(28,28)):
+#     for lll in ll:
+#         print("{:.4f}".format(lll), end=" ")
+#     print()
+# print(Y_train[:5])
+# print(Y_test[:5])
+# print(np.argmax(Y_test[:100], axis=1))
 classes = Y_train.shape[1]
 
 MODEL_INPUT_SHAPE = X_train.shape[1:]
@@ -47,12 +61,24 @@ validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, Y_test))
 callbacks = []
 
 # model architecture
-model = Sequential()
-model.add(Dense(20, activation='relu',
-    activity_regularizer=tf.keras.regularizers.l1(0.00001)))
-model.add(Dense(10, activation='relu',
-    activity_regularizer=tf.keras.regularizers.l1(0.00001)))
-model.add(Dense(classes, activation='softmax', name='y_pred'))
+# model = Sequential()
+# model.add(Dense(20, activation='relu',
+#     activity_regularizer=tf.keras.regularizers.l1(0.00001)))
+# model.add(Dense(10, activation='relu',
+#     activity_regularizer=tf.keras.regularizers.l1(0.00001)))
+# model.add(Dense(classes, activation='softmax', name='y_pred'))
+
+model = models.Sequential()
+model.add(layers.Conv2D(6, 5, activation='tanh', input_shape=X_train.shape[1:]))
+model.add(layers.AveragePooling2D(2))
+model.add(layers.Activation('sigmoid'))
+model.add(layers.Conv2D(16, 5, activation='tanh'))
+model.add(layers.AveragePooling2D(2))
+model.add(layers.Activation('sigmoid'))
+model.add(layers.Conv2D(120, 4, activation='tanh'))
+model.add(layers.Flatten())
+model.add(layers.Dense(84, activation='tanh'))
+model.add(layers.Dense(10, activation='softmax'))
 
 # this controls the learning rate
 opt = Adam(learning_rate=args.learning_rate, beta_1=0.9, beta_2=0.999)
@@ -61,9 +87,14 @@ BATCH_SIZE = 32
 train_dataset_batch = train_dataset.batch(BATCH_SIZE, drop_remainder=False)
 validation_dataset_batch = validation_dataset.batch(BATCH_SIZE, drop_remainder=False)
 
+# model.compile(optimizer='adam', loss=losses.sparse_categorical_crossentropy, metrics=['accuracy'])
+
 # train the neural network
-model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+# model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+model.compile(loss=losses.categorical_crossentropy, optimizer='adam', metrics=['accuracy'])
 model.fit(train_dataset_batch, epochs=args.epochs, validation_data=validation_dataset_batch, verbose=2, callbacks=callbacks)
+
+model.evaluate(X_test, Y_test)
 
 print('')
 print('Training network OK')

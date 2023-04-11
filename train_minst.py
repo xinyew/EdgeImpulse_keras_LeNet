@@ -1,6 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow.keras import datasets, layers, models, losses
+import numpy as np
 
 (x_train,y_train),(x_test,y_test) = datasets.mnist.load_data()
 print(x_train.shape)
@@ -18,6 +19,17 @@ x_val = x_train[-2000:,:,:,:]
 y_val = y_train[-2000:]
 x_train = x_train[:-2000,:,:,:]
 y_train = y_train[:-2000]
+
+
+print(x_train.shape)
+print(x_val.shape)
+print(y_train.shape)
+print(y_val.shape)
+# for ll in (np.array(x_train[0]).astype(float)/255).tolist():
+#     for lll in ll:
+#         for llll in lll:
+#             print("{:.4f}".format(llll), end=" ")
+#         print()
 
 model = models.Sequential()
 model.add(layers.Conv2D(6, 5, activation='tanh', input_shape=x_train.shape[1:]))
