@@ -1,4 +1,5 @@
 import tensorflow as tf
+import matplotlib.pyplot as plt
 from tensorflow.keras import datasets, layers, models, losses
 import numpy as np
 import os
@@ -39,14 +40,14 @@ y_train = np.load(os.path.join('data', 'Y_split_train.npy'))
 x_test = np.load(os.path.join('data', 'X_split_test.npy'), mmap_mode='r')
 y_test = np.load(os.path.join('data', 'Y_split_test.npy'))
 
-x_train = np.asarray(x_train)
-x_test = np.asarray(x_test)
+# x_train = np.asarray(x_train)
+# x_test = np.asarray(x_test)
 
-# print(y_train[10])
-# for ll in ((x_train[10]).reshape(28,28)):
-#     for lll in ll:
-#         print("{:.4f}".format(lll), end=" ")
-#     print()
+print(y_train[15345])
+for ll in ((x_train[15345]).reshape(28,28)):
+    for lll in ll:
+        print("{:.4f}".format(lll), end=" ")
+    print()
 
 train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
 validation_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test))
@@ -68,13 +69,13 @@ model.add(layers.Flatten())
 model.add(layers.Dense(84, activation='tanh'))
 model.add(layers.Dense(10, activation='softmax'))
 
-model.compile(optimizer='adam',
-              loss=losses.categorical_crossentropy,
+model.compile(optimizer='adam', 
+              loss=losses.categorical_crossentropy, 
               metrics=['accuracy'])
 
-history = model.fit(train_dataset_batch,
-                    batch_size=BATCH_SIZE,
-                    epochs=10,
+history = model.fit(train_dataset_batch, 
+                    batch_size=BATCH_SIZE, 
+                    epochs=10, 
                     validation_data=validation_dataset_batch)
 
 model.evaluate(x_test, y_test)
