@@ -1,0 +1,28 @@
+2023-04-20 23:45:32.686870: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:925] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node
+Your kernel may have been built without NUMA support.
+2023-04-20 23:45:32.713546: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2023-04-20 23:45:32.713595: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1850] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2023-04-20 23:45:32.713868: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Epoch 1/10
+750/750 [==============================] - 6s 8ms/step - loss: 2.3122 - accuracy: 0.1038 - val_loss: 2.3026 - val_accuracy: 0.1135
+Epoch 2/10
+750/750 [==============================] - 6s 7ms/step - loss: 1.6646 - accuracy: 0.3863 - val_loss: 0.7951 - val_accuracy: 0.7322
+Epoch 3/10
+750/750 [==============================] - 6s 7ms/step - loss: 0.6844 - accuracy: 0.7717 - val_loss: 0.5571 - val_accuracy: 0.8150
+Epoch 4/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.5440 - accuracy: 0.8227 - val_loss: 0.4782 - val_accuracy: 0.8513
+Epoch 5/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.4779 - accuracy: 0.8465 - val_loss: 0.4427 - val_accuracy: 0.8623
+Epoch 6/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.4285 - accuracy: 0.8631 - val_loss: 0.4141 - val_accuracy: 0.8720
+Epoch 7/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.3883 - accuracy: 0.8761 - val_loss: 0.3655 - val_accuracy: 0.8888
+Epoch 8/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.3547 - accuracy: 0.8866 - val_loss: 0.3236 - val_accuracy: 0.9016
+Epoch 9/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.3279 - accuracy: 0.8952 - val_loss: 0.2958 - val_accuracy: 0.9081
+Epoch 10/10
+750/750 [==============================] - 5s 7ms/step - loss: 0.3067 - accuracy: 0.9007 - val_loss: 0.2768 - val_accuracy: 0.9118
+375/375 [==============================] - 1s 2ms/step - loss: 0.2768 - accuracy: 0.9118

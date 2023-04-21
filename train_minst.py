@@ -1,5 +1,4 @@
 import tensorflow as tf
-import matplotlib.pyplot as plt
 from tensorflow.keras import datasets, layers, models, losses
 import numpy as np
 import os
@@ -69,13 +68,13 @@ model.add(layers.Flatten())
 model.add(layers.Dense(84, activation='tanh'))
 model.add(layers.Dense(10, activation='softmax'))
 
-model.compile(optimizer='adam', 
-              loss=losses.categorical_crossentropy, 
+model.compile(optimizer='adam',
+              loss=losses.categorical_crossentropy,
               metrics=['accuracy'])
 
-history = model.fit(train_dataset_batch, 
-                    batch_size=BATCH_SIZE, 
-                    epochs=10, 
+history = model.fit(train_dataset_batch,
+                    batch_size=BATCH_SIZE,
+                    epochs=10,
                     validation_data=validation_dataset_batch)
 
 model.evaluate(x_test, y_test)
