@@ -39,8 +39,8 @@ X_test = np.load(os.path.join(args.data_directory, 'X_split_test.npy'), mmap_mod
 Y_test = np.load(os.path.join(args.data_directory, 'Y_split_test.npy'))
 
 
-X_train = np.asarray(X_train)
-X_test = np.asarray(X_test)
+# X_train = np.asarray(X_train)
+# X_test = np.asarray(X_test)
 
 classes = Y_train.shape[1]
 MODEL_INPUT_SHAPE = X_train.shape[1:]
