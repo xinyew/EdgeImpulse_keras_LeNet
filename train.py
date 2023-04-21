@@ -69,10 +69,11 @@ model.add(layers.Flatten())
 model.add(layers.Dense(84, activation='tanh'))
 model.add(layers.Dense(10, activation='softmax'))
 
+opt = Adam(learning_rate=args.learning_rate, beta_1=0.9, beta_2=0.999)
 
 # train the neural network
 model.compile(loss=losses.categorical_crossentropy, 
-              optimizer='adam', 
+              optimizer=opt, 
               metrics=['accuracy'])
 
 model.fit(train_dataset_batch, 
