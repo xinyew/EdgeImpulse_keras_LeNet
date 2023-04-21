@@ -1,8 +1,12 @@
-import numpy as np
-a = np.array([1, 0, 3])
-print(a.shape)
-b = np.zeros((a.size, a.max() + 1))
-print(b.shape)
-print(np.arange(a.size), a)
-b[np.arange(a.size), a] = 1
-print(b)
+with open('viz', 'r') as f:
+    with open('vizz', 'w') as f1:
+        s = f.read()
+        for line in s.splitlines():
+            for ll in line.split(' '):
+                if ll:
+                    if float(ll) > 0.9:
+                        f1.write('1.0000')
+                    else:
+                        f1.write('0.0000')
+                f1.write(" ")
+            f1.write("\n")

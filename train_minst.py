@@ -2,23 +2,52 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow.keras import datasets, layers, models, losses
 import numpy as np
+import os
 
-(x_train,y_train),(x_test,y_test) = datasets.mnist.load_data()
+# (x_train,y_train),(x_test,y_test) = datasets.mnist.load_data()
 
-x_train = tf.pad(x_train, [[0, 0], [2,2], [2,2]])/255
-x_test = tf.pad(x_test, [[0, 0], [2,2], [2,2]])/255
+# # x_train = tf.pad(x_train, [[0, 0], [2,2], [2,2]])/255
+# # x_test = tf.pad(x_test, [[0, 0], [2,2], [2,2]])/255
+# x_train = (x_train)/255
+# x_test = (x_test)/255
 
-y_tmp = np.zeros((y_train.size, y_train.max() + 1), dtype=int)
-y_tmp[np.arange(y_train.size), y_train] = 1
-y_train = y_tmp
-y_tmp = np.zeros((y_test.size, y_test.max() + 1), dtype=int)
-y_tmp[np.arange(y_test.size), y_test] = 1
-y_test = y_tmp
-# print(x_train[0].numpy().flatten().tolist())
+# y_tmp = np.zeros((y_train.size, y_train.max() + 1), dtype=int)
+# y_tmp[np.arange(y_train.size), y_train] = 1
+# y_train = y_tmp
+# y_tmp = np.zeros((y_test.size, y_test.max() + 1), dtype=int)
+# y_tmp[np.arange(y_test.size), y_test] = 1
+# y_test = y_tmp
 
 
-x_train = tf.expand_dims(x_train, axis=3, name=None)
-x_test = tf.expand_dims(x_test, axis=3, name=None)
+# x_train = tf.expand_dims(x_train, axis=3, name=None)
+# x_test = tf.expand_dims(x_test, axis=3, name=None)
+
+# x_train = 1 - x_train
+# x_test = 1 - x_test
+# x_train = x_train.numpy()
+# x_test = x_test.numpy()
+# print(type(x_train))
+# print(x_train.shape)
+# for ll in ((x_train[0]).reshape(28,28)):
+#     for lll in ll:
+#         print("{:.4f}".format(lll), end=" ")
+#     print()
+
+# print("######################")
+
+x_train = np.load(os.path.join('data', 'X_split_train.npy'), mmap_mode='r')
+y_train = np.load(os.path.join('data', 'Y_split_train.npy'))
+x_test = np.load(os.path.join('data', 'X_split_test.npy'), mmap_mode='r')
+y_test = np.load(os.path.join('data', 'Y_split_test.npy'))
+
+x_train = np.asarray(x_train)
+x_test = np.asarray(x_test)
+
+# print(y_train[10])
+# for ll in ((x_train[10]).reshape(28,28)):
+#     for lll in ll:
+#         print("{:.4f}".format(lll), end=" ")
+#     print()
 
 train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
 validation_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test))

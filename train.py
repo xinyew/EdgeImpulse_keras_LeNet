@@ -38,11 +38,20 @@ Y_train = np.load(os.path.join(args.data_directory, 'Y_split_train.npy'))
 X_test = np.load(os.path.join(args.data_directory, 'X_split_test.npy'), mmap_mode='r')
 Y_test = np.load(os.path.join(args.data_directory, 'Y_split_test.npy'))
 
+
+X_train = np.asarray(X_train)
+X_test = np.asarray(X_test)
+
 classes = Y_train.shape[1]
 MODEL_INPUT_SHAPE = X_train.shape[1:]
 
 train_dataset = tf.data.Dataset.from_tensor_slices((X_train, Y_train))
 validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, Y_test))
+
+# this controls the batch size, or you can manipulate the tf.data.Dataset objects yourself
+BATCH_SIZE = 64
+train_dataset_batch = train_dataset.batch(BATCH_SIZE, drop_remainder=False)
+validation_dataset_batch = validation_dataset.batch(BATCH_SIZE, drop_remainder=False)
 
 # place to put callbacks (e.g. to MLFlow or Weights & Biases)
 callbacks = []
@@ -60,14 +69,17 @@ model.add(layers.Flatten())
 model.add(layers.Dense(84, activation='tanh'))
 model.add(layers.Dense(10, activation='softmax'))
 
-# this controls the batch size, or you can manipulate the tf.data.Dataset objects yourself
-BATCH_SIZE = 64
-train_dataset_batch = train_dataset.batch(BATCH_SIZE, drop_remainder=False)
-validation_dataset_batch = validation_dataset.batch(BATCH_SIZE, drop_remainder=False)
 
 # train the neural network
-model.compile(loss=losses.categorical_crossentropy, optimizer='adam', metrics=['accuracy'])
-model.fit(train_dataset_batch, epochs=args.epochs, validation_data=validation_dataset_batch, verbose=2, callbacks=callbacks)
+model.compile(loss=losses.categorical_crossentropy, 
+              optimizer='adam', 
+              metrics=['accuracy'])
+
+model.fit(train_dataset_batch, 
+          epochs=args.epochs, 
+          validation_data=validation_dataset_batch, 
+        #   verbose=2, 
+          callbacks=callbacks)
 
 model.evaluate(X_test, Y_test)
 
